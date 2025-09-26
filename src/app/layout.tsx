@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { StackProvider, StackTheme } from "@stackframe/stack";
 import { stackServerApp } from "../stack/server";
 import { Geist, Geist_Mono } from "next/font/google";
+import { MixpanelProvider } from "@/components/providers/MixpanelProvider";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -29,7 +30,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       ><StackProvider app={stackServerApp}><StackTheme>
-        {children}
+        <MixpanelProvider>
+          {children}
+        </MixpanelProvider>
       </StackTheme></StackProvider></body>
     </html>
   );
