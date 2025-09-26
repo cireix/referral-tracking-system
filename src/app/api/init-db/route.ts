@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
 import { initDatabase } from '@/lib/db';
+import { NextResponse } from 'next/server';
 
 // GET: Initialize database
 // Remove this route once the database is initialized
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     const success = await initDatabase();
     

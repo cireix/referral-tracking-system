@@ -127,7 +127,7 @@ const CalculatorOnboarding: React.FC<CalculatorOnboardingProps> = ({
       target: 'body',
       content: (
         <div className="text-left">
-          <h3 className="font-bold text-lg mb-2">You're All Set! 🎉</h3>
+          <h3 className="font-bold text-lg mb-2">You&apos;re All Set! 🎉</h3>
           <p>Now you know how to use all the calculator features.</p>
           <p className="mt-2">Need this tour again? Click the help button (?) at any time!</p>
         </div>

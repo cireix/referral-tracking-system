@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { getOnboardingStatus, initDatabase, setOnboardingCompleted } from '@/lib/db';
 import { stackServerApp } from '@/stack/server';
-import { getOnboardingStatus, setOnboardingCompleted, initDatabase } from '@/lib/db';
+import { NextResponse } from 'next/server';
 
 // Initialize database on first load
 initDatabase();
 
 // GET: Check if user has completed onboarding
-export async function GET(request: NextRequest) {
+export async function GET() {
   try {
     // Get the current user from Stack Auth
     const user = await stackServerApp.getUser();
@@ -33,7 +33,7 @@ export async function GET(request: NextRequest) {
 }
 
 // POST: Mark onboarding as completed
-export async function POST(request: NextRequest) {
+export async function POST() {
   try {
     // Get the current user from Stack Auth
     const user = await stackServerApp.getUser();

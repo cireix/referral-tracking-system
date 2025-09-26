@@ -656,15 +656,4 @@ describe('Calculator Component', () => {
       expect(display?.textContent).toMatch(/[0-9]+\.?[0-9]*e\+[0-9]+/i);
     });
   });
-
-  describe('Percentage Function', () => {
-    it('should calculate percentage correctly', () => {
-      render(<Calculator />);
-      fireEvent.click(screen.getByRole('button', { name: '5' }));
-      fireEvent.click(screen.getByRole('button', { name: '0' }));
-      // Assuming percentage function exists, would need to add button or use keyboard
-      const display = document.querySelector('.text-4xl');
-      // Test would need percentage button implementation
-    });
-  });
 }); 

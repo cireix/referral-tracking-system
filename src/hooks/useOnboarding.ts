@@ -46,9 +46,9 @@ export function useOnboarding(userId: string | undefined) {
           const hasSeenOnboarding = localStorage.getItem('calculatorOnboardingComplete');
           setShowOnboarding(!hasSeenOnboarding);
         }
-      } catch (error: any) {
+      } catch (error: unknown) {
         // Ignore abort errors
-        if (error?.name === 'AbortError') {
+        if (error instanceof Error && error.name === 'AbortError') {
           return;
         }
         
