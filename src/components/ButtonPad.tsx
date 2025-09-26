@@ -31,12 +31,12 @@ export default function ButtonPad({
 }: ButtonPadProps) {
   // Button styles
   const styles = {
-    number: 'bg-gray-700 text-white hover:bg-gray-600 py-4',
-    operator: 'bg-blue-600 text-white hover:bg-blue-500 py-4',
-    clear: 'bg-red-600 text-white hover:bg-red-500 py-4',
-    backspace: 'bg-orange-600 text-white hover:bg-orange-500 py-4',
-    equals: 'bg-green-600 text-white hover:bg-green-500 py-4',
-    special: 'bg-gray-700 text-white hover:bg-gray-600 py-4'
+    number: 'number-pad bg-gray-700 text-white hover:bg-gray-600 py-4',
+    operator: 'operation-buttons bg-blue-600 text-white hover:bg-blue-500 py-4',
+    clear: 'special-buttons bg-red-600 text-white hover:bg-red-500 py-4',
+    backspace: 'special-buttons bg-orange-600 text-white hover:bg-orange-500 py-4',
+    equals: 'operation-buttons bg-green-600 text-white hover:bg-green-500 py-4',
+    special: 'special-buttons bg-gray-700 text-white hover:bg-gray-600 py-4'
   };
 
   // Generate number buttons configuration

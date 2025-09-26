@@ -16,7 +16,7 @@ export default function CalculatorDisplay({
   formatDisplay
 }: CalculatorDisplayProps) {
   return (
-    <div className="bg-gray-800 rounded-2xl p-6 mb-4">
+    <div className="calculator-display bg-gray-800 rounded-2xl p-6 mb-4">
       <div className="text-gray-400 text-sm h-6 text-right mb-2">
         {memory !== 0 && (
           <span className="bg-blue-600/20 text-blue-400 px-2 py-1 rounded-md text-xs mr-2">

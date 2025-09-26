@@ -32,7 +32,7 @@ export default function MemoryButtons({
   ];
 
   return (
-    <div className="grid grid-cols-5 gap-2 mb-3">
+    <div className="memory-buttons grid grid-cols-5 gap-2 mb-3">
       {memoryButtons.map((button) => (
         <CalculatorButton
           key={button.label}

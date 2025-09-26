@@ -4,7 +4,10 @@ import { useState, useCallback } from 'react';
 import CalculatorDisplay from './CalculatorDisplay';
 import MemoryButtons from './MemoryButtons';
 import ButtonPad from './ButtonPad';
+import CalculatorOnboarding from './CalculatorOnboarding';
 import { useCalculatorKeyboard } from '@/hooks/useCalculatorKeyboard';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import { useUser } from '@stackframe/stack';
 import {
   calculate,
   formatDisplay,
@@ -16,12 +19,18 @@ import {
 } from '@/utils/calculatorUtils';
 
 export default function Calculator() {
+  // Get current user for onboarding tracking
+  const user = useUser();
+  
   // State management
   const [display, setDisplay] = useState('0');
   const [previousValue, setPreviousValue] = useState<string | null>(null);
   const [operation, setOperation] = useState<string | null>(null);
   const [waitingForOperand, setWaitingForOperand] = useState(false);
   const [memory, setMemory] = useState<number>(0);
+  
+  // Use the onboarding hook with user ID
+  const { showOnboarding, startOnboarding, completeOnboarding } = useOnboarding(user?.id);
 
   // Number input handler
   const inputNumber = useCallback((num: string) => {
@@ -116,7 +125,16 @@ export default function Calculator() {
 
   return (
     <div className="min-h-screen bg-black-800 flex items-center justify-center p-4">
-      <div className="bg-gray-900/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-full max-w-md">
+      <div className="bg-gray-900/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-full max-w-md relative">
+        {/* Help Button */}
+        <button
+          onClick={startOnboarding}
+          className="absolute top-4 right-4 z-10 bg-blue-600 hover:bg-blue-700 text-white rounded-full w-8 h-8 flex items-center justify-center transition-colors"
+          title="Start Tour"
+        >
+          ?
+        </button>
+
         <CalculatorDisplay
           display={display}
           memory={memory}
@@ -143,10 +161,16 @@ export default function Calculator() {
           onDecimal={inputDecimal}
         />
 
-        <div className="mt-4 text-center text-gray-400 text-xs">
+        <div className="mt-4 text-center text-gray-400 text-xs keyboard-tip">
           💡 Tip: Use your keyboard for faster calculations
         </div>
       </div>
+
+      {/* Onboarding Tour */}
+      <CalculatorOnboarding
+        run={showOnboarding}
+        onComplete={completeOnboarding}
+      />
     </div>
   );
 } 

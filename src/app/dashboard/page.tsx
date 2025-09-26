@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useStackApp, useUser } from '@stackframe/stack';
 import { UserButton } from '@stackframe/stack';
@@ -9,12 +9,32 @@ import Link from 'next/link';
 export default function DashboardPage() {
   const user = useUser();
   const router = useRouter();
+  const [onboardingStatus, setOnboardingStatus] = useState<boolean | null>(null);
 
   useEffect(() => {
     // Redirect to signin if not logged in
     if (!user) {
       router.push('/signin');
+      return;
     }
+    
+    // Create abort controller for cleanup
+    const abortController = new AbortController();
+    
+    // Fetch onboarding status
+    fetch('/api/onboarding', { signal: abortController.signal })
+      .then(res => res.json())
+      .then(data => setOnboardingStatus(data.completed))
+      .catch(err => {
+        if (err.name !== 'AbortError') {
+          console.error('Error fetching onboarding status:', err);
+        }
+      });
+    
+    // Cleanup function
+    return () => {
+      abortController.abort();
+    };
   }, [user, router]);
 
   if (!user) {
@@ -71,6 +91,24 @@ export default function DashboardPage() {
                 <label className="text-sm text-gray-600">Created At</label>
                 <p className="text-gray-900">
                   {user.signedUpAt ? new Date(user.signedUpAt).toLocaleDateString() : 'Unknown'}
+                </p>
+              </div>
+              <div>
+                <label className="text-sm text-gray-600">Calculator Tutorial</label>
+                <p className="text-gray-900">
+                  {onboardingStatus !== null ? (
+                    onboardingStatus ? (
+                      <span className="text-green-600 flex items-center gap-1">
+                        ✓ Completed
+                      </span>
+                    ) : (
+                      <span className="text-yellow-600 flex items-center gap-1">
+                        ⚠ Not completed
+                      </span>
+                    )
+                  ) : (
+                    <span className="text-gray-400">Loading...</span>
+                  )}
                 </p>
               </div>
             </div>
