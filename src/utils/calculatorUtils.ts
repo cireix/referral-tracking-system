@@ -90,4 +90,4 @@ export function handleNumberInput(display: string, num: string, waitingForOperan
     return num;
   }
   return display === '0' ? num : display + num;
-} 
+}
