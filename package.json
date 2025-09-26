@@ -3,15 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "next dev",
     "build": "next build",
-    "start": "vercel start",
+    "start": "next start",
     "lint": "eslint",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
+    "@stackframe/stack": "^2.8.39",
     "next": "15.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0"
