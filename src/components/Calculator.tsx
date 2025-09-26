@@ -115,7 +115,7 @@ export default function Calculator() {
   });
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-cyan-600 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-black-800 flex items-center justify-center p-4">
       <div className="bg-gray-900/95 backdrop-blur-xl rounded-3xl shadow-2xl p-6 w-full max-w-md">
         <CalculatorDisplay
           display={display}
