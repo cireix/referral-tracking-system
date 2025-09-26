@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vercel dev",
-    "build": "yarn build",
+    "build": "next build",
     "start": "vercel start",
     "lint": "eslint",
     "test": "jest",
