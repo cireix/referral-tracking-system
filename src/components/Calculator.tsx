@@ -54,7 +54,9 @@ export default function Calculator() {
 
     if (previousValue === null) {
       setPreviousValue(inputValue);
-    } else if (operation) {
+    } else if (operation && !waitingForOperand) {
+      // Only perform calculation if we're not waiting for an operand
+      // (i.e., the user has entered a number after the last operator)
       const currentValue = previousValue || '0';
       const newValue = calculate(currentValue, inputValue, operation);
       setDisplay(newValue);
@@ -63,7 +65,7 @@ export default function Calculator() {
 
     setWaitingForOperand(true);
     setOperation(nextOperation);
-  }, [display, previousValue, operation, calculate]);
+  }, [display, previousValue, operation, calculate, waitingForOperand]);
 
   // Handle equals
   const performEquals = useCallback(() => {
