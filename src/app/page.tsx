@@ -41,13 +41,16 @@ function HomeContent() {
           const data = await response.json();
           
           if (data.valid) {
-            console.log('Referral code is valid:', refCode);
+            console.log('Referral code is valid:', refCode, 'Referrer ID:', data.referrerId);
             localStorage.setItem('referralCode', refCode);
+            // Store the referrer's ID as well
+            localStorage.setItem('referrerId', data.referrerId);
             setValidReferralCode(refCode);
             
             // Track referral code capture only if valid
             mixpanel.track(MixpanelEvents.REFERRAL_CODE_CAPTURED, {
               referralCode: refCode,
+              referrerId: data.referrerId,
               source: 'url_parameter',
               valid: true,
             });
@@ -58,6 +61,9 @@ function HomeContent() {
             console.log('Invalid referral code:', refCode);
             // Don't store invalid codes
             setValidReferralCode(null);
+            // Clear any existing referral data for invalid codes
+            localStorage.removeItem('referralCode');
+            localStorage.removeItem('referrerId');
             
             // Track invalid referral attempt
             mixpanel.track(MixpanelEvents.REFERRAL_CODE_CAPTURED, {
@@ -69,6 +75,9 @@ function HomeContent() {
         } catch (error) {
           console.error('Error validating referral code:', error);
           setValidReferralCode(null);
+          // Clear any partial data on error
+          localStorage.removeItem('referralCode');
+          localStorage.removeItem('referrerId');
           // Remove from validated set on error to allow retry
           validatedCodesRef.current.delete(refCode);
         } finally {
@@ -78,6 +87,9 @@ function HomeContent() {
         // Clear state when there's no referral code
         setValidReferralCode(null);
         setIsValidatingCode(false);
+        // Clean up any stale referral data
+        localStorage.removeItem('referralCode');
+        localStorage.removeItem('referrerId');
       }
     };
     
@@ -93,11 +105,13 @@ function HomeContent() {
           const isNewUser = localStorage.getItem('isNewUser');
           if (isNewUser === 'true') {
             const referralCode = localStorage.getItem('referralCode');
+            const referrerId = localStorage.getItem('referrerId');
             
             mixpanel.trackSignup(user.id, {
               email: user.primaryEmail || undefined,
               name: user.displayName || undefined,
               referralCode: referralCode || undefined,
+              referredBy: referrerId || undefined,
             });
             
             localStorage.removeItem('isNewUser');
@@ -108,6 +122,7 @@ function HomeContent() {
         // Handle referral tracking
         if (!hasTrackedReferral && !isTrackingRef.current) {
           const referralCode = localStorage.getItem('referralCode');
+          const referrerId = localStorage.getItem('referrerId');
           if (referralCode) {
             // Set the lock to prevent duplicate calls
             isTrackingRef.current = true;
@@ -120,26 +135,30 @@ function HomeContent() {
               // Track successful referral
               mixpanel.trackReferralEvent(MixpanelEvents.REFERRAL_TRACKED, {
                 referralCode: referralCode,
-                referredId: user.id,
+                referrerId: referrerId || undefined,  // The person who shared the code
+                referredId: user.id,  // The new user who signed up
                 valid: true,  // This was successful, so it's valid
                 success: true,
               });
               
-              // Clear the referral code after successful tracking
+              // Clear the referral code and referrer ID after successful tracking
               localStorage.removeItem('referralCode');
+              localStorage.removeItem('referrerId');
             } else {
               console.log('Referral tracking failed or user was already referred');
               
               // Track failed referral attempt
               mixpanel.trackReferralEvent(MixpanelEvents.REFERRAL_TRACKED, {
                 referralCode: referralCode,
-                referredId: user.id,
+                referrerId: referrerId || undefined,  // The person who shared the code
+                referredId: user.id,  // The new user who signed up
                 valid: true,  // Code was valid, but tracking failed (e.g., already referred)
                 success: false,
               });
               
               // Still remove the code to prevent repeated attempts
               localStorage.removeItem('referralCode');
+              localStorage.removeItem('referrerId');
             }
             setHasTrackedReferral(true);
             

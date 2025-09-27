@@ -39,7 +39,7 @@ export interface UserProperties {
   email?: string;
   name?: string;
   referralCode?: string;
-  referredBy?: string;
+  referredBy?: string;  // The ID of the user who referred this user
   totalReferrals?: number;
   onboardingCompleted?: boolean;
   signupDate?: Date;
