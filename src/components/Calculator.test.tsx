@@ -3,6 +3,33 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Calculator from './Calculator';
 
+// Mock Stack auth
+jest.mock('@stackframe/stack', () => ({
+  useUser: () => ({
+    id: 'test-user',
+    primaryEmail: 'test@example.com',
+    displayName: 'Test User',
+  }),
+}));
+
+// Mock Mixpanel provider
+jest.mock('@/components/providers/MixpanelProvider', () => ({
+  useMixpanel: () => ({
+    track: jest.fn(),
+    identify: jest.fn(),
+    reset: jest.fn(),
+  }),
+}));
+
+// Mock onboarding hook
+jest.mock('@/hooks/useOnboarding', () => ({
+  useOnboarding: () => ({
+    showOnboarding: false,
+    startOnboarding: jest.fn(),
+    completeOnboarding: jest.fn(),
+  }),
+}));
+
 describe('Calculator Component', () => {
   describe('Initial Rendering', () => {
     it('should render calculator with initial display of 0', () => {
