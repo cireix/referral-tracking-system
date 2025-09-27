@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useUser } from '@stackframe/stack';
 import Home from '../page';
@@ -16,10 +15,10 @@ jest.mock('next/navigation', () => ({
 jest.mock('@stackframe/stack', () => ({
   useUser: jest.fn(),
   UserButton: () => <div data-testid="user-button">User Button</div>,
-  SignIn: ({ fullPage, automaticRedirect }: any) => (
+  SignIn: () => (
     <div data-testid="sign-in-form">Sign In Form</div>
   ),
-  SignUp: ({ fullPage, automaticRedirect }: any) => (
+  SignUp: () => (
     <div data-testid="sign-up-form">Sign Up Form</div>
   ),
 }));
@@ -67,7 +66,7 @@ describe('Referral Tracking System', () => {
       replace: jest.fn(),
       pathname: '/',
     });
-    (useReferral as jest.Mock).mockImplementation((userId) => ({
+    (useReferral as jest.Mock).mockImplementation(() => ({
       trackReferral: mockTrackReferral,
       stats: null,
       loading: false,

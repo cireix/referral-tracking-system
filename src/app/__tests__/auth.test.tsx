@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useUser } from '@stackframe/stack';
@@ -15,14 +15,14 @@ jest.mock('next/navigation', () => ({
 jest.mock('@stackframe/stack', () => ({
   useUser: jest.fn(),
   UserButton: () => <div data-testid="user-button">User Button</div>,
-  SignIn: ({ fullPage, automaticRedirect }: any) => (
+  SignIn: () => (
     <div data-testid="sign-in-form">
       <input type="email" placeholder="Email" data-testid="email-input" />
       <input type="password" placeholder="Password" data-testid="password-input" />
       <button data-testid="sign-in-button">Sign In</button>
     </div>
   ),
-  SignUp: ({ fullPage, automaticRedirect }: any) => (
+  SignUp: () => (
     <div data-testid="sign-up-form">
       <input type="email" placeholder="Email" data-testid="signup-email-input" />
       <input type="password" placeholder="Password" data-testid="signup-password-input" />
@@ -211,7 +211,7 @@ describe('Authentication Flow', () => {
         displayName: null,
       });
       
-      const { rerender } = render(<Home />);
+      render(<Home />);
       
       await waitFor(() => {
         // New user flag should be cleared after tracking

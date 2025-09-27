@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextRequest } from 'next/server';
 import { GET, POST } from '../route';
 import { stackServerApp } from '@/stack/server';
 import * as db from '@/lib/db';
@@ -287,7 +287,7 @@ describe('Referral API Routes', () => {
       } as NextRequest;
 
       const response = await POST(request);
-      const data = await response.json();
+      await response.json();
 
       expect(response.status).toBe(200);
       expect(db.trackReferral).toHaveBeenCalledWith(

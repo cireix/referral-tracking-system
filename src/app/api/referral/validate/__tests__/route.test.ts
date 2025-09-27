@@ -89,7 +89,7 @@ describe('Referral Validation API', () => {
 
       const request = new NextRequest('http://localhost:3000/api/referral/validate?code=FIRST&code=SECOND');
       const response = await GET(request);
-      const data = await response.json();
+      await response.json();
 
       expect(response.status).toBe(200);
       expect(db.validateReferralCode).toHaveBeenCalledWith('FIRST');

@@ -1,6 +1,5 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useUser } from '@stackframe/stack';
 import Home from '@/app/page';
@@ -373,7 +372,7 @@ describe('End-to-End Referral Flow Integration Tests', () => {
       (useSearchParams as jest.Mock).mockReturnValue(mockSearchParams);
       
       // Start with validation in progress
-      let resolveValidation: any;
+      let resolveValidation: (value: unknown) => void = () => {};
       (global.fetch as jest.Mock).mockImplementationOnce(() =>
         new Promise(resolve => {
           resolveValidation = resolve;
